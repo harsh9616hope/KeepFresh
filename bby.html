@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#178047">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="FreshKeep">
+<title>FreshKeep – never waste a bite</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#eef5ee;--surf:#fff;--ink:#12301f;--mute:#5b7266;--line:#cfdcd0;--red:#c8321f;--amb:#b27300;--grn:#1f7a45;--redbg:#fde7e3;--ambbg:#fff1cf;--grnbg:#e0f3e6;--btn:#12301f;--btnt:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a13;--surf:#16271c;--ink:#e6f2e9;--mute:#97b0a0;--line:#2a4233;--red:#ff8a78;--amb:#f2c15c;--grn:#6fd49a;--redbg:#3a1b16;--ambbg:#352a0e;--grnbg:#16361f;--btn:#e6f2e9;--btnt:#0e1a13;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1a13;--surf:#16271c;--ink:#e6f2e9;--mute:#97b0a0;--line:#2a4233;--red:#ff8a78;--amb:#f2c15c;--grn:#6fd49a;--redbg:#3a1b16;--ambbg:#352a0e;--grnbg:#16361f;--btn:#e6f2e9;--btnt:#0e1a13;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+main{max-width:720px;margin:0 auto;padding:28px 18px 60px}
+h1{font-size:clamp(2rem,7vw,3.2rem);line-height:1.05;font-weight:800;margin:0 0 12px;letter-spacing:-.02em}
+h2{font-size:1.25rem;margin:34px 0 10px}
+p{margin:0 0 10px;max-width:60ch}
+.mute{color:var(--mute)}
+.fact{background:var(--ink);color:var(--bg);border-radius:14px;padding:16px 18px;margin:18px 0 26px}
+.fact b{font-size:1.5rem}
+form{display:grid;grid-template-columns:1fr 130px auto;gap:8px}
+input,button{font:inherit;border-radius:10px;border:1.5px solid var(--line);padding:11px 12px;background:var(--surf);color:var(--ink);min-width:0}
+input:focus-visible,button:focus-visible{outline:3px solid var(--grn);outline-offset:2px}
+button{cursor:pointer}
+.go{background:var(--btn);color:var(--btnt);border-color:var(--btn);font-weight:600}
+.quick{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.quick button{padding:5px 11px;font-size:.85rem;border-radius:99px}
+ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+li.item{display:flex;align-items:center;gap:12px;background:var(--surf);border:1.5px solid var(--line);border-left-width:8px;border-radius:12px;padding:10px 12px}
+li.item .n{flex:1;font-weight:600}
+li.item small{display:block;font-weight:400;color:var(--mute)}
+li.red{border-left-color:var(--red)} li.amb{border-left-color:var(--amb)} li.grn{border-left-color:var(--grn)}
+.tag{font-size:.8rem;font-weight:600;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.red .tag{background:var(--redbg);color:var(--red)} .amb .tag{background:var(--ambbg);color:var(--amb)} .grn .tag{background:var(--grnbg);color:var(--grn)}
+.acts button{padding:6px 10px;font-size:.85rem}
+.empty{border:2px dashed var(--line);border-radius:12px;padding:22px;text-align:center;color:var(--mute)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stats div{background:var(--surf);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.stats b{font-size:1.8rem;display:block;line-height:1.1}
+.rec{background:var(--surf);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.rec b{display:block}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:6px}
+canvas#c3d{width:100%;height:320px;display:block;touch-action:pan-y;cursor:grab}
+.fact{background:linear-gradient(135deg,var(--ink),#1f7a45);box-shadow:0 10px 24px -12px rgba(0,0,0,.45)}
+li.item{transition:transform .15s,box-shadow .15s}li.item:hover{transform:translateX(3px);box-shadow:0 6px 16px -10px rgba(0,0,0,.4)}
+:root:root{--bg:#f1fbf3;--surf:#fff;--ink:#0f3320;--mute:#4d6b59;--line:#cfe9d6;--red:#178047;--amb:#6cc58b;--grn:#bfe8c9;--redbg:#178047;--redt:#fff;--ambbg:#e4f6e9;--grnbg:#dcf3e3;--btn:#178047;--btnt:#fff;--fact:#bfe8c9;--factt:#0f3320}
+@media (prefers-color-scheme:dark){:root:root:not([data-theme="light"]){--bg:#0d1f15;--surf:#13291c;--ink:#e8f7ec;--mute:#9bbfa8;--line:#244634;--red:#4ade80;--amb:#86e3a8;--grn:#2f6b47;--redbg:#4ade80;--redt:#0d1f15;--ambbg:#13291c;--grnbg:#1a3a27;--btn:#4ade80;--btnt:#0d1f15;--fact:#1d4a30;--factt:#e8f7ec}}
+h1{font-size:clamp(2.4rem,9vw,4.2rem);letter-spacing:-.04em;line-height:.98}
+.fact{background:var(--fact);color:var(--factt);border-radius:18px;box-shadow:none}
+input,button,li.item,.rec,.stats div{border-radius:14px}
+.go,.quick button{border-radius:99px}
+li.item{box-shadow:none}
+li.red{border-left-width:10px}li.amb{border-left-width:6px}li.grn{border-left-width:3px}
+.red .tag{background:var(--redbg);color:var(--redt)}
+.amb .tag{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.grn .tag{background:var(--grnbg);color:var(--mute)}
+input:focus-visible,button:focus-visible{outline-color:var(--ink)}
+canvas#c3d{background:radial-gradient(closest-side,var(--grnbg),transparent)}
+[hidden]{display:none!important}
+main.landing{max-width:1000px;min-height:100vh;display:flex;align-items:center}
+main.landing .hero{width:100%}
+main.landing h1{font-size:clamp(2.6rem,8vw,4.8rem)}
+main.landing canvas#c3d{height:400px}
+.big{font-size:1.1rem;padding:15px 34px;margin-top:14px;box-shadow:0 10px 24px -10px var(--btn);transition:transform .15s}
+.big:hover{transform:translateY(-2px)}
+.mini{border-radius:99px;padding:6px 14px;font-size:.85rem;margin-bottom:16px}
+#app.show{animation:rise .5s ease}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#app.show{animation:none}.big:hover{transform:none}}
+body{background-image:radial-gradient(var(--line) 1.3px,transparent 1.3px);background-size:22px 22px}
+.ticker{overflow:hidden;background:var(--btn);color:var(--btnt);font-weight:600;font-size:.9rem;padding:8px 0;white-space:nowrap;position:relative;z-index:2}
+.tk{display:inline-flex;animation:tick 34s linear infinite}
+.tk span{padding-right:2.2rem}
+@keyframes tick{to{transform:translateX(-50%)}}
+.side{display:none;position:fixed;top:0;bottom:0;width:92px;pointer-events:none;z-index:1}
+.side.l{left:0;border-right:3px dotted var(--grn)}
+.side.r{right:0;border-left:3px dotted var(--grn)}
+@media (min-width:1180px){.side{display:block}}
+.stk{position:absolute;width:62px;height:62px;display:grid;place-items:center;font-size:2rem;background:var(--surf);border:4px solid #fff;border-radius:50%;box-shadow:0 6px 14px -6px rgba(0,0,0,.35),0 0 0 2px var(--grn);pointer-events:auto;transform:rotate(var(--r));animation:bob 4s ease-in-out infinite;animation-delay:var(--d);transition:scale .2s}
+.stk.sq{border-radius:16px}
+.stk:hover{scale:1.2}
+.l .stk{left:14px}.r .stk{right:14px}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(var(--r))}50%{transform:translateY(-12px) rotate(calc(var(--r) + 8deg))}}
+.quick button{transition:transform .15s}.quick button:hover{transform:rotate(-4deg) scale(1.08)}
+.big{animation:pulse 2.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(23,128,71,.5)}70%{box-shadow:0 0 0 18px rgba(23,128,71,0)}100%{box-shadow:0 0 0 0 rgba(23,128,71,0)}}
+.conf{position:fixed;z-index:50;pointer-events:none;font-size:1.4rem;animation:fly .9s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(360deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){.tk,.stk,.big{animation:none}.quick button:hover{transform:none}}
+#hist{background:var(--surf);border:1.5px solid var(--line);border-radius:14px;max-height:340px;overflow-y:auto}
+.hday{font-weight:600;padding:8px 12px;background:var(--grnbg);position:sticky;top:0}
+.hrow{display:flex;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line)}
+.hrow .t{margin-left:auto;color:var(--mute);font-size:.85rem;white-space:nowrap}
+.hb{font-size:.78rem;font-weight:600;padding:2px 10px;border-radius:99px}
+.hb.u{background:var(--redbg);color:var(--redt)}.hb.x{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.cv{position:relative}
+.brand{display:inline-block;font-weight:800;font-size:1.15rem;padding:6px 16px;border-radius:99px;background:var(--fact);color:var(--factt);margin:0 10px 14px 0;transform:rotate(-2deg);box-shadow:0 0 0 2px var(--grn)}
+.pill{position:absolute;z-index:2;padding:7px 14px;font-weight:800;font-size:.95rem;white-space:nowrap;background:var(--fact);color:var(--factt);border:3px dashed var(--btn);border-radius:99px;transform:rotate(var(--r));animation:bob 5s ease-in-out infinite;animation-delay:var(--d)}
+@media (prefers-reduced-motion:reduce){.pill{animation:none}}
+@media (max-width:640px){.cv .stk{width:46px;height:46px;font-size:1.4rem}.pill{font-size:.8rem;padding:5px 10px}}
+@media (max-width:640px){main.landing canvas#c3d{height:260px}}
+@media (max-width:640px){.hero{grid-template-columns:1fr}canvas#c3d{height:240px}}
+@media (max-width:520px){form{grid-template-columns:1fr 1fr}form .go{grid-column:1/-1}li.item{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="ticker" aria-hidden="true"><div class="tk"><span>🥬 Check the fridge &nbsp;•&nbsp; 🍅 Eat the oldest first &nbsp;•&nbsp; ❄️ Freeze what you can’t finish &nbsp;•&nbsp; 🍞 Stale bread makes great toast &nbsp;•&nbsp; 🥕 Wilted veg loves soup &nbsp;•&nbsp;</span><span>🥬 Check the fridge &nbsp;•&nbsp; 🍅 Eat the oldest first &nbsp;•&nbsp; ❄️ Freeze what you can’t finish &nbsp;•&nbsp; 🍞 Stale bread makes great toast &nbsp;•&nbsp; 🥕 Wilted veg loves soup &nbsp;•&nbsp;</span></div></div>
+<div class="side l" aria-hidden="true"><span class="stk" style="top:7%;--r:-12deg;--d:0s">🍎</span><span class="stk sq" style="top:23%;--r:9deg;--d:-1s">🥕</span><span class="stk" style="top:40%;--r:-6deg;--d:-2s">🥛</span><span class="stk sq" style="top:58%;--r:12deg;--d:-3s">🍋</span><span class="stk" style="top:76%;--r:-9deg;--d:-1.5s">🥬</span></div>
+<div class="side r" aria-hidden="true"><span class="stk sq" style="top:13%;--r:10deg;--d:-.5s">🍅</span><span class="stk" style="top:30%;--r:-8deg;--d:-2.5s">🥖</span><span class="stk sq" style="top:48%;--r:-12deg;--d:-1s">🧀</span><span class="stk" style="top:66%;--r:7deg;--d:-3.5s">🥑</span><span class="stk sq" style="top:84%;--r:-5deg;--d:-2s">🍌</span></div>
+<main id="main" class="landing">
+<section class="hero"><div class="ht"><div class="brand">🥬 FreshKeep</div><h1>Use it up before it goes off.</h1>
+<p class="mute">Add what’s in your fridge and pantry. The page puts what expires first at the top and suggests what to cook with it.</p><button id="enter" class="go big" type="button">Enter FreshKeep</button></div><div class="cv"><canvas id="c3d" aria-label="Floating 3D apple, tomato, carrot, lemon and milk carton" role="img"></canvas><span class="stk" aria-hidden="true" style="top:2%;left:2%;--r:-10deg;--d:-.3s">🥦</span><span class="stk sq" aria-hidden="true" style="top:4%;right:2%;--r:12deg;--d:-1.2s">🍇</span><span class="stk" aria-hidden="true" style="top:46%;left:-1%;--r:8deg;--d:-2s">🍓</span><span class="stk sq" aria-hidden="true" style="bottom:4%;right:2%;--r:-9deg;--d:-2.8s">🍞</span><span class="stk" aria-hidden="true" style="bottom:6%;left:6%;--r:11deg;--d:-.8s">🥒</span><span class="stk sq" aria-hidden="true" style="top:44%;right:-1%;--r:-7deg;--d:-3.2s">🍊</span><span class="pill" aria-hidden="true" style="top:0;left:34%;--r:-4deg;--d:-1s">Zero waste ♻️</span><span class="pill" aria-hidden="true" style="bottom:1%;left:34%;--r:3deg;--d:-2.4s">Save money 💸</span><span class="pill" aria-hidden="true" style="top:24%;right:6%;--r:5deg;--d:-3s">100% free</span></div></section>
+<div id="app" hidden><div class="brand">🥬 FreshKeep</div> <button id="home" class="mini" type="button">Back to start</button>
+<div class="fact"><b>19%</b> of all food produced is wasted, over a billion tonnes a year, and households cause most of it (UN Food Waste Index). Knowing what’s about to expire is the cheapest fix.</div>
+
+<form id="f">
+<input id="name" placeholder="Food (e.g. spinach)" aria-label="Food name" required maxlength="40">
+<input id="days" type="number" min="0" max="365" placeholder="Days left" aria-label="Days until it expires" required>
+<button class="go" type="submit">Add item</button>
+</form>
+<div class="quick" aria-label="Quick add">
+<button data-n="Milk" data-d="5">Milk · 5d</button>
+<button data-n="Tomatoes" data-d="4">Tomatoes · 4d</button>
+<button data-n="Spinach" data-d="3">Spinach · 3d</button>
+<button data-n="Bread" data-d="3">Bread · 3d</button>
+<button data-n="Eggs" data-d="14">Eggs · 14d</button>
+<button data-n="Rice" data-d="30">Rice · 30d</button>
+</div>
+
+<h2>In your kitchen</h2>
+<ul id="list"></ul>
+
+<h2>Cook this next</h2>
+<div id="recs"></div>
+
+<h2>Ask the Gemma chef</h2>
+<p class="mute" style="font-size:.9rem">Gemma 3 is Google’s open AI model. It runs on your own device, so your food list stays private. The first load downloads roughly 1 GB, then your browser keeps it.</p>
+<button id="gl" class="go" type="button" style="border-radius:99px">Load Gemma</button>
+<div id="gs" class="mute" style="margin:8px 0;font-size:.9rem"></div>
+<form id="gf" hidden style="grid-template-columns:1fr auto;margin-top:8px"><input id="gq" placeholder="Ask: what can I cook tonight?" aria-label="Ask Gemma" maxlength="200"><button class="go" type="submit">Ask Gemma</button></form>
+<div id="ga" class="rec" hidden style="white-space:pre-wrap;margin-top:8px"></div>
+<h2>History</h2>
+<p class="mute" style="font-size:.9rem">Everything you ate or threw away, with the date and time. Saved on this device for 90 days.</p>
+<div id="hist"></div>
+<button id="clr" class="mini" type="button" style="margin-top:10px">Clear history</button>
+<h2>Your progress</h2>
+<div class="stats"><div><b id="used">0</b>items eaten in time</div><div><b id="tossed">0</b>items thrown away</div></div>
+<p class="mute" style="margin-top:14px;font-size:.85rem">Data stays in this browser only.</p></div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+var cv=document.getElementById("c3d");if(!cv)return;
+try{
+if(!window.THREE)throw 0;
+var T=THREE,r=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+r.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+var s=new T.Scene(),cam=new T.PerspectiveCamera(40,1,.1,50);cam.position.set(0,.3,10);
+s.add(new T.AmbientLight(0xffffff,.8));var dl=new T.DirectionalLight(0xffffff,.9);dl.position.set(3,5,6);s.add(dl);
+function M(c,q){return new T.MeshStandardMaterial({color:c,roughness:q==null?.45:q,metalness:0})}
+function X(g,m,x,y,z){var o=new T.Mesh(g,m);o.position.set(x||0,y||0,z||0);return o}
+function apple(){var g=new T.Group(),b=X(new T.SphereGeometry(1,32,24),M(0xd9362b,.35));b.scale.set(1,.92,1);g.add(b);g.add(X(new T.CylinderGeometry(.05,.07,.4,8),M(0x5a3a1e),0,1,0));var l=X(new T.SphereGeometry(.28,16,12),M(0x2e9a4f),.3,1.05,0);l.scale.set(1,.25,.5);l.rotation.z=.4;g.add(l);return g}
+function tomato(){var g=new T.Group(),b=X(new T.SphereGeometry(.9,32,24),M(0xef4a2f,.3));b.scale.set(1.1,.85,1.1);g.add(b);for(var i=0;i<5;i++){var p=new T.Group(),l=X(new T.ConeGeometry(.12,.5,6),M(0x2e8a3f),.2,.78,0);l.rotation.z=1.2;p.rotation.y=i*Math.PI*2/5;p.add(l);g.add(p)}return g}
+function carrot(){var g=new T.Group(),c=X(new T.ConeGeometry(.4,2.2,20),M(0xf28a1e,.6));c.rotation.z=Math.PI;g.add(c);for(var i=-1;i<=1;i++){var l=X(new T.ConeGeometry(.09,.9,6),M(0x2e9a4f),i*.15,1.5,0);l.rotation.z=-i*.35;g.add(l)}g.rotation.z=.5;return g}
+function lemon(){var g=new T.Group(),b=X(new T.SphereGeometry(.8,32,24),M(0xf6d33a,.5));b.scale.set(1.3,1,1);g.add(b);g.add(X(new T.SphereGeometry(.12,12,8),M(0xf6d33a,.5),1.02,0,0));g.add(X(new T.SphereGeometry(.12,12,8),M(0xf6d33a,.5),-1.02,0,0));return g}
+function carton(){var g=new T.Group();g.add(X(new T.BoxGeometry(1.1,1.6,1.1),M(0xf4f7fb,.6)));g.add(X(new T.BoxGeometry(1.14,.5,1.14),M(0x3b82f6,.5),0,-.1,0));var t=X(new T.BoxGeometry(1.1,.35,.55),M(0xf4f7fb,.6),0,.95,0);g.add(t);return g}
+var root=new T.Group();s.add(root);
+var defs=[[apple(),-2.3,.9,0,.9,.9],[tomato(),.1,-.7,1.2,1,1.1],[carrot(),2.4,.6,0,1.1,.8],[lemon(),-.3,1.9,-1.5,.85,1.3],[carton(),1.5,-1.9,-.6,.75,.7]],objs=[];
+defs.forEach(function(d,i){var o=d[0];o.position.set(d[1],d[2],d[3]);o.scale.setScalar(d[4]*.9);root.add(o);objs.push({o:o,y:d[2],sp:d[5],ph:i*1.3})});
+var tx=0,ty=0,cx=0,cy=0,calm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+function size(){var w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();if(calm)draw(0)}
+function draw(t){objs.forEach(function(b){if(!calm){b.o.rotation.y=t*.0006*b.sp+b.ph;b.o.position.y=b.y+Math.sin(t*.0012+b.ph)*.18}});cx+=(tx-cx)*.06;cy+=(ty-cy)*.06;root.rotation.y=cx*.5;root.rotation.x=cy*.25;r.render(s,cam)}
+function loop(t){draw(t);requestAnimationFrame(loop)}
+cv.addEventListener("pointermove",function(e){var b=cv.getBoundingClientRect();tx=((e.clientX-b.left)/b.width-.5)*2;ty=((e.clientY-b.top)/b.height-.5)*2;if(calm)draw(0)});
+cv.addEventListener("pointerleave",function(){tx=0;ty=0});
+window.addEventListener("resize",size);size();
+if(calm)draw(0);else requestAnimationFrame(loop);
+}catch(e){cv.style.display="none"}
+})();
+</script>
+<script>
+(function(){
+var eng=null,busy=false,gl=document.getElementById("gl"),gs=document.getElementById("gs"),gf=document.getElementById("gf"),ga=document.getElementById("ga");
+function items(){try{var s=JSON.parse(localStorage.getItem("useitup-v1")),t=new Date();t.setHours(0,0,0,0);return(s.items||[]).map(function(i){return{n:i.name,d:Math.round((i.exp-t.getTime())/864e5)}}).sort(function(a,b){return a.d-b.d})}catch(e){return[]}}
+gl.addEventListener("click",async function(){
+if(!navigator.gpu){gs.textContent="Gemma needs a browser with WebGPU, such as recent Chrome or Edge on a laptop or desktop.";return}
+gl.disabled=true;gs.textContent="Starting download…";
+try{var w=await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.0.1/dist/transformers.min.js");
+eng=await w.pipeline("text-generation","onnx-community/gemma-3-1b-it-ONNX",{dtype:"q4",device:"webgpu",progress_callback:function(p){if(p.status==="progress")gs.textContent="Downloading Gemma 3… "+Math.round(p.progress)+"%"}});
+gs.textContent="Gemma is ready.";gl.hidden=true;gf.hidden=false}
+catch(e){gs.textContent="Gemma couldn’t load here. It needs WebGPU and a site that allows downloading the model, such as one hosted on Netlify.";gl.disabled=false}});
+gf.addEventListener("submit",async function(e){e.preventDefault();if(!eng||busy)return;busy=true;
+var q=document.getElementById("gq").value.trim()||"What can I cook tonight?",list=items().map(function(i){return i.n+" ("+(i.d<0?"expired":i.d+" days left")+")"}).join(", ")||"nothing yet";
+ga.hidden=false;ga.textContent="Thinking…";
+try{var r=await eng([{role:"user",content:"You are a friendly kitchen helper that fights food waste. Use the items that expire soonest first, keep the answer short and practical, and never suggest eating expired food.\n\nMy food: "+list+".\n"+q}],{max_new_tokens:400,do_sample:false});
+var tx=r[0].generated_text;ga.textContent=Array.isArray(tx)?tx[tx.length-1].content:tx}
+catch(err){ga.textContent="Something went wrong. Please try again."}
+busy=false});
+})();
+</script>
+<script>
+(function(){
+var calm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+function burst(el,set){if(calm)return;var r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;for(var i=0;i<10;i++){var s=document.createElement("span"),a=Math.random()*Math.PI*2,d=60+Math.random()*80;s.className="conf";s.textContent=set[i%set.length];s.style.left=x+"px";s.style.top=y+"px";s.style.setProperty("--dx",Math.cos(a)*d+"px");s.style.setProperty("--dy",(Math.sin(a)*d-40)+"px");document.body.appendChild(s);setTimeout((function(n){return function(){n.remove()}})(s),950)}}
+document.getElementById("enter").addEventListener("click",function(e){burst(e.currentTarget,["🍃","🥬","✨","🍎"])});
+document.getElementById("list").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.a==="use")burst(b,["🎉","✨","🥦","💚"])});
+})();
+</script>
+<script>
+(function(){
+var m=document.getElementById("main"),a=document.getElementById("app"),h=document.querySelector(".hero");
+function go(on){a.hidden=!on;h.hidden=on;m.classList.toggle("landing",!on);if(on){a.classList.remove("show");void a.offsetWidth;a.classList.add("show")}window.scrollTo(0,0)}
+document.getElementById("enter").addEventListener("click",function(){go(true)});
+document.getElementById("home").addEventListener("click",function(){go(false)});
+})();
+</script>
+<script>
+(function(){
+var KEY="useitup-v1",S={items:[],used:0,tossed:0};
+try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&Array.isArray(p.items))S=p}}catch(e){}
+if(!Array.isArray(S.log))S.log=[];var KEEP=90*864e5;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+var DAY=864e5;
+function left(it){var t=new Date();t.setHours(0,0,0,0);return Math.round((it.exp-t.getTime())/DAY)}
+function esc(s){return s.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var R=[
+{k:["tomato"],t:"Quick tomato sauce",d:"Simmer chopped tomatoes with garlic and oil for 15 minutes. Freeze extra."},
+{k:["spinach","palak"],t:"Garlic spinach sauté",d:"Wilt in a hot pan with garlic. Stir into eggs, dal or pasta."},
+{k:["bread"],t:"Bread upma or French toast",d:"Stale bread works better. Toast cubes with onion and spices, or soak in egg and milk."},
+{k:["milk"],t:"Milk-based treat",d:"Boil down for kheer, or make paneer by curdling with lemon juice."},
+{k:["banana"],t:"Banana pancakes",d:"Mash overripe bananas into batter, or freeze slices for smoothies."},
+{k:["rice"],t:"Veg fried rice",d:"Day-old rice fries best. Add whatever vegetables are about to expire."},
+{k:["egg"],t:"Veggie omelette",d:"Chop any soft vegetables and fold them into eggs."},
+{k:["potato","aloo"],t:"Crispy roast potatoes",d:"Parboil, then roast with spices until browned."},
+{k:["onion"],t:"Caramelised onions",d:"Cook slowly for 30 minutes. Keeps a week in the fridge."},
+{k:["curd","yogurt","yoghurt","dahi"],t:"Raita or lassi",d:"Whisk with salt and cumin, or blend with fruit."},
+{k:["paneer"],t:"Paneer bhurji",d:"Crumble and cook with onion, tomato and spices. Ready in 10 minutes."},{k:["cheese"],t:"Cheese toastie or pasta bake",d:"Grate it over bread or leftover pasta and grill until melted."},{k:["apple"],t:"Stewed apples",d:"Simmer slices with cinnamon for 10 minutes. Eat warm or freeze."},{k:["butter"],t:"Garlic butter",d:"Mix with crushed garlic and herbs, then freeze it in a log for later."},
+{k:["carrot","cabbage","capsicum","pepper","beans"],t:"Stir-fry or soup",d:"Slice thin, fry fast with soy sauce, or simmer into soup."}
+];
+function render(){
+var L=document.getElementById("list"),items=S.items.slice().sort(function(a,b){return a.exp-b.exp});
+if(!items.length){L.innerHTML='<li class="empty">Nothing here yet. Add your first item above, or tap a quick-add button.</li>'}
+else L.innerHTML=items.map(function(it){var d=left(it),c=d<=1?"red":d<=4?"amb":"grn";
+var tag=d<0?"Expired "+(-d)+"d ago":d===0?"Expires today":d===1?"1 day left":d+" days left";
+return '<li class="item '+c+'"><div class="n">'+esc(it.name)+'</div><span class="tag">'+tag+'</span><span class="acts"><button data-a="use" data-id="'+it.id+'">Ate it</button> <button data-a="toss" data-id="'+it.id+'">Tossed</button></span></li>'}).join("");
+var soon=items.filter(function(i){return left(i)<=5}),out=[],seen={};
+soon.forEach(function(i){var n=i.name.toLowerCase();R.forEach(function(r,ri){if(!seen[ri]&&r.k.some(function(k){return n.indexOf(k)>-1})){seen[ri]=1;out.push({r:r,i:i.name})}})});
+document.getElementById("recs").innerHTML=out.length?out.map(function(o){return '<div class="rec" style="margin-bottom:8px"><b>'+o.r.t+'</b>'+esc(o.i)+' is running out. '+o.r.d+'</div>'}).join(""):'<div class="empty">'+(soon.length?"No match for your expiring items yet. Try soups, stir-fries or omelettes: they take almost any leftovers.":"Nothing expires in the next 5 days. Items due soon will get recipe ideas here.")+'</div>';
+S.log=S.log.filter(function(h){return Date.now()-h.ts<KEEP});
+var H=document.getElementById("hist"),lg=S.log.slice().sort(function(a,b){return b.ts-a.ts}),hh="",last="";
+lg.forEach(function(h){var d=new Date(h.ts),day=d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});if(day!==last){hh+='<div class="hday">'+day+'</div>';last=day}hh+='<div class="hrow"><span class="hb '+(h.a==="use"?"u":"x")+'">'+(h.a==="use"?"Ate":"Tossed")+'</span><span>'+esc(h.n)+'</span><span class="t">'+d.toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"})+'</span></div>'});
+H.innerHTML=hh||'<div class="empty" style="border:0">No history yet. Tap “Ate it” or “Tossed” on an item and it will show up here.</div>';
+document.getElementById("used").textContent=S.used;document.getElementById("tossed").textContent=S.tossed}
+function add(n,d){var t=new Date();t.setHours(0,0,0,0);S.items.push({id:Date.now()+Math.random().toString(36).slice(2,6),name:n.trim(),exp:t.getTime()+d*DAY});save();render()}
+document.getElementById("f").addEventListener("submit",function(e){e.preventDefault();var n=document.getElementById("name"),d=document.getElementById("days");add(n.value,parseInt(d.value,10)||0);n.value="";d.value="";n.focus()});
+[["Bananas",4],["Curd",6],["Paneer",5],["Carrots",10],["Potatoes",20],["Onions",25],["Cheese",14],["Apples",12],["Cabbage",9],["Butter",30]].forEach(function(q){var qb=document.createElement("button");qb.dataset.n=q[0];qb.dataset.d=q[1];qb.textContent=q[0]+" \u00b7 "+q[1]+"d";document.querySelector(".quick").appendChild(qb)});
+var armed=false,cb=document.getElementById("clr");cb.addEventListener("click",function(){if(!armed){armed=true;cb.textContent="Tap again to clear all history";setTimeout(function(){armed=false;cb.textContent="Clear history"},3000)}else{armed=false;cb.textContent="Clear history";S.log=[];save();render()}});
+document.querySelector(".quick").addEventListener("click",function(e){var b=e.target.closest("button");if(b)add(b.dataset.n,+b.dataset.d)});
+document.getElementById("list").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+var it=S.items.filter(function(i){return i.id===b.dataset.id})[0];if(it)S.log.push({n:it.name,a:b.dataset.a,ts:Date.now()});
+S.items=S.items.filter(function(i){return i.id!==b.dataset.id});if(b.dataset.a==="use")S.used++;else S.tossed++;save();render()});
+render()})();
+</script>
+</body>
+</html>
